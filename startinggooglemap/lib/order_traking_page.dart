@@ -40,14 +40,12 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
         google_api_key,
         PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
         PointLatLng(destination.latitude, destination.longitude));
-    print(result.points);
-    if (result.points.isNotEmpty) {
-      result.points.forEach((PointLatLng point) {
-        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-        print("Debug point: " + point.toString());
-      });
-      setState(() {});
-    }
+
+    result.points.forEach((PointLatLng point) {
+      polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+      print("Debug point: " + point.toString());
+    });
+    setState(() {});
   }
 
   @override
@@ -56,6 +54,12 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
     getPolyPoints();
     super.initState();
   }
+
+  static final Polyline _kPolyline =
+      Polyline(polylineId: PolylineId("_kPolyline"), points: [
+    LatLng(sourceLocation.latitude, sourceLocation.longitude),
+    LatLng(destination.latitude, destination.longitude)
+  ]);
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +86,7 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
                         points: polylineCoordinates,
                         color: Colors.black,
                         width: 10),
+                    //_kPolyline
                   },
                   markers: {
                     Marker(
